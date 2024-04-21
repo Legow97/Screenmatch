@@ -1,6 +1,11 @@
 package com.alura.screenmatch.models;
 
-public class Title {
+import com.alura.screenmatch.calculos.TitleOmdb;
+import com.alura.screenmatch.exception.ErrorConversionDurationException;
+import com.google.gson.annotations.SerializedName;
+
+public class Title implements Comparable<Title> {
+
     private String name;
     private int releaseDate;
     private int durationMinutes;
@@ -14,6 +19,15 @@ public class Title {
     }
     public Title() {
 
+    }
+
+    public Title(TitleOmdb myTitleOmdb) {
+        this.name = myTitleOmdb.title();
+        this.releaseDate = Integer.valueOf(myTitleOmdb.year());
+        if (myTitleOmdb.runtime().contains("N/A")){
+            throw new ErrorConversionDurationException("No se pudo convertir la duración, contiene N/A");
+        }
+        this.durationMinutes = Integer.valueOf(myTitleOmdb.runtime().substring(0,3).replace(" ",""));
     }
 
     public String getName() {
@@ -63,5 +77,18 @@ public class Title {
 
     public double calculateMedia(){
         return sumEvaluation/totalEvaluations;
+    }
+
+    @Override
+    public int compareTo(Title otherTitle) {
+        return this.getName().compareTo(otherTitle.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "(name='" + name +
+                ", releaseDate=" + releaseDate +
+                ", duración=" + durationMinutes +
+                ')';
     }
 }

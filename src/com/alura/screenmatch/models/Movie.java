@@ -27,6 +27,6 @@ public class Movie extends Title implements Clasification {
 
     @Override
     public String toString() {
-        return "Película:"+ this.getName() + "Lanzamiento:"+ getReleaseDate();
+        return "Película: " + this.getName() + " (" + this.getReleaseDate() + ")";
     }
 }
